@@ -6,7 +6,7 @@ const ChatConatiner = document.getElementById('ChatConatiner')
 socket.on("message", message => {
     
     const divElement = document.createElement('div');
-    divElement.id = 'me';
+    divElement.id = 'container';
     divElement.classList.add('border', 'self-start', 'border-white', 'text-justify', 'break-words', 'rounded-bl-lg', 'rounded-r-lg');
 
     const pElement = document.createElement('p');
@@ -31,7 +31,7 @@ function SendMessage(){
         socket.emit("message", message)
         
         const divElement = document.createElement('div');
-        divElement.id = 'me';
+        divElement.id = 'container';
         divElement.classList.add('border', 'self-end', 'border-white', 'text-justify', 'break-words', 'rounded-br-lg' , 'rounded-l-lg');
 
         const pElement = document.createElement('p');
@@ -72,7 +72,7 @@ function scrollToBottom() {
 
 
 function checkMessageLength() {
-    const messages = document.querySelectorAll("#me"); // Adjust the class name as needed
+    const messages = document.querySelectorAll("#container"); // Adjust the class name as needed
 
     messages.forEach(message => {
         const content = message.querySelector("#Message");
