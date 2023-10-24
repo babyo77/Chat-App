@@ -7,7 +7,7 @@ socket.on("message", message => {
     
     const divElement = document.createElement('div');
     divElement.id = 'container';
-    divElement.classList.add('border', 'self-start', 'border-white', 'text-justify', 'break-words', 'rounded-bl-lg', 'rounded-r-lg');
+    divElement.classList.add('border', 'self-start', 'border-white', 'text-justify', 'break-words', 'rounded-bl-lg', 'rounded-r-lg','cursor-pointer');
 
     const pElement = document.createElement('p');
     pElement.classList.add('p-2');
@@ -32,7 +32,7 @@ function SendMessage(){
         
         const divElement = document.createElement('div');
         divElement.id = 'container';
-        divElement.classList.add('border', 'self-end', 'border-white', 'text-justify', 'break-words', 'rounded-br-lg' , 'rounded-l-lg');
+        divElement.classList.add('border', 'self-end', 'border-white', 'text-justify', 'break-words', 'rounded-br-lg' , 'rounded-l-lg' ,'cursor-pointer');
 
         const pElement = document.createElement('p');
         pElement.id = 'Message';
@@ -76,11 +76,16 @@ function checkMessageLength() {
 
     messages.forEach(message => {
         const content = message.querySelector("#Message");
+        content.addEventListener('dblclick', ()=> {
+            message.remove();
+        });
         if (content.textContent.length >= 27) {
             message.classList.add("w-56");
         }
     });
+    
 }
+
 
 
 checkMessageLength()
