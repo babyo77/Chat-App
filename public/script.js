@@ -7,10 +7,10 @@ socket.on("message", message => {
     
     const divElement = document.createElement('div');
     divElement.id = 'me';
-    divElement.classList.add('border', 'self-start', 'border-white', 'text-left', 'break-words', 'rounded-bl-lg', 'rounded-r-lg');
+    divElement.classList.add('border', 'self-start', 'border-white', 'text-justify', 'break-words', 'rounded-bl-lg', 'rounded-r-lg');
 
     const pElement = document.createElement('p');
-    pElement.classList.add('p-3');
+    pElement.classList.add('p-2');
     pElement.id = "Message"
     pElement.textContent = message;
 
@@ -32,11 +32,11 @@ function SendMessage(){
         
         const divElement = document.createElement('div');
         divElement.id = 'me';
-        divElement.classList.add('border', 'self-end', 'border-white', 'text-left', 'break-words', 'rounded-br-lg' , 'rounded-l-lg');
+        divElement.classList.add('border', 'self-end', 'border-white', 'text-justify', 'break-words', 'rounded-br-lg' , 'rounded-l-lg');
 
         const pElement = document.createElement('p');
         pElement.id = 'Message';
-        pElement.classList.add('p-3');
+        pElement.classList.add('p-2');
         pElement.textContent = message;
 
 
@@ -76,7 +76,7 @@ function checkMessageLength() {
 
     messages.forEach(message => {
         const content = message.querySelector("#Message");
-        if (content.textContent.length >= 16) {
+        if (content.textContent.length >= 27) {
             message.classList.add("w-56");
         }
     });
