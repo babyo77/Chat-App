@@ -587,15 +587,12 @@ video {
 }
 
 
-html {
-  overflow: scroll;
-  overflow-x: hidden;
-}
-::-webkit-scrollbar {
+
+#ChatConatiner::-webkit-scrollbar {
   width: 2px; 
   background: transparent;  
 }
-::-webkit-scrollbar-thumb {
+#ChatConatiner::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.607);
 }
-
+ 
