@@ -60,10 +60,11 @@ sendBtn.addEventListener('click', () => {
 })
 
 inputMessage.addEventListener('keydown',(e)=>{
-    if(e.key=='Enter'){
+    if(e.key==='Enter'){
        SendMessage()
     }
 })
+
 
 function scrollToBottom() {
     ChatConatiner.scrollTop = ChatConatiner.scrollHeight;
@@ -83,5 +84,4 @@ function checkMessageLength() {
 
 
 checkMessageLength()
-
 
