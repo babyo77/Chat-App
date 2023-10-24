@@ -59,9 +59,8 @@ sendBtn.addEventListener('click', () => {
     SendMessage()
 })
 
-document.body.addEventListener('keydown',(e)=>{
-    if(e.keyCode==13){
-        e.preventDefault()
+inputMessage.addEventListener('keydown',(e)=>{
+    if(e.key=='Enter'){
        SendMessage()
     }
 })

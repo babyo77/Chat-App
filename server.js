@@ -18,7 +18,7 @@ res.render('index')
 io.on("connection", (socket) => {
     socket.on("message",(message)=>{
         socket.broadcast.emit("message",message)
-        console.log(`message from ${socket.id} ${message}`)
+        console.log(`Message from Socket ${socket.id} ${message}`)
     })
   });
 
