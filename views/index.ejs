@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Chat Section</title>
+    <link rel="stylesheet" href="../style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="font-poppins h-screen flex bg-black justify-center items-center">
+    <div class="grid text-white gap-3 text-center">
+        <h1 class="text-2xl font-semibold">Global Chat 🦄</h1>
+        <div id="ChatConatiner" class=" flex flex-col space-y-2 border border-white w-80 p-3" style="height: 30rem;">
+         <!-- <div id="sender" class="border self-start border-white h-7  rounded-bl-lg rounded-r-lg">
+            <p class="px-3">hi</p>
+         </div>
+         <div id="me" class="border self-end border-white h-7 rounded-br-lg rounded-l-lg">
+            <p class="px-3">hello</p>
+         </div> -->
+        </div>
+        <div class="flex">
+            <input type="text" class="border rounded-none border-r-0 border-white bg-black  w-64 h-9 block px-3 outline-none" placeholder="Message" id="inputMessage">
+            <button id="sendBtn" class= "border border-white pl-5  border-l-0 h-9 w-16  flex justify-center items-center"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+                <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
+              </svg></button>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+      <script src="../script.js"></script>
+</body>
+</html>
