@@ -585,3 +585,17 @@ video {
   outline: 2px solid transparent;
   outline-offset: 2px;
 }
+
+
+html {
+  overflow: scroll;
+  overflow-x: hidden;
+}
+::-webkit-scrollbar {
+  width: 2px; 
+  background: transparent;  
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.607);
+}
+
