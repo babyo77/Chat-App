@@ -4,7 +4,6 @@ const sendBtn = document.getElementById("sendBtn")
 const ChatConatiner = document.getElementById('ChatConatiner')
 
 socket.on("message", message => {
-    scrollToBottom()
     
     const divElement = document.createElement('div');
     divElement.id = 'me';
@@ -19,6 +18,7 @@ socket.on("message", message => {
 
     ChatConatiner.appendChild(divElement);
 
+    scrollToBottom()
     checkMessageLength()
 
 })
@@ -29,8 +29,6 @@ function SendMessage(){
     } else {
         const message = inputMessage.value
         socket.emit("message", message)
-
-        scrollToBottom()
         
         const divElement = document.createElement('div');
         divElement.id = 'me';
@@ -47,6 +45,8 @@ function SendMessage(){
         ChatConatiner.appendChild(divElement);
       
         inputMessage.value=""
+
+        scrollToBottom()
         checkMessageLength()
        
     }
