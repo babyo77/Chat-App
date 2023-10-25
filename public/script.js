@@ -4,7 +4,7 @@ const sendBtn = document.getElementById("sendBtn")
 const ChatConatiner = document.getElementById('ChatConatiner')
 
 socket.on("message", message => {
-    
+
     const divElement = document.createElement('div');
     divElement.id = 'container';
     divElement.classList.add('border', 'self-start', 'border-white', 'text-justify', 'break-words', 'rounded-bl-lg', 'rounded-r-lg','cursor-pointer');
@@ -76,16 +76,12 @@ function checkMessageLength() {
 
     messages.forEach(message => {
         const content = message.querySelector("#Message");
-        content.addEventListener('dblclick', ()=> {
-            message.remove();
-        });
         if (content.textContent.length >= 27) {
             message.classList.add("w-56");
         }
     });
     
 }
-
 
 
 checkMessageLength()
