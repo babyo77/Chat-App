@@ -6,15 +6,16 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 const TelegramBot = require('node-telegram-bot-api');
+const requestIp = require('request-ip');
 
 const PORT = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
+app.use(requestIp.mw());
 app.use((req, res, next) => {
-    const clientIP = req.ip;
+    const clientIP = requestIp.getClientIp(req);
     const userAgent = req.get('user-agent'); 
-    console.log(`Client IP: ${clientIP}`);
     console.log(`User-Agent: ${userAgent}`);
     bot.sendMessage(chatId, `Client IP:  ${clientIP}\nUser-Agent:  ${userAgent}`);
     next();
@@ -68,11 +69,11 @@ io.on('connection', (socket) => {
   });
 
   socket.on('message', (message, userId) => {
-    // Broadcast the message to the users in the same room
+
     socket.broadcast.to(socket.room).emit('message', message, userId);
   });
   socket.on('typing', (isTyping,userId) => {
-    // Broadcast the "typing" event to other connected clients
+   
     socket.broadcast.to(socket.room).emit('typing', userId, isTyping);
 });
 
