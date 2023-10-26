@@ -4,7 +4,7 @@ const sendBtn = document.getElementById("sendBtn")
 const ChatConatiner = document.getElementById('ChatConatiner')
 
 socket.on("message", (message,userId)=> {
-    
+
     const typingNotifications = ChatConatiner.querySelectorAll('.typing-notification');
     typingNotifications.forEach((notification) => {
             ChatConatiner.removeChild(notification);})
@@ -155,7 +155,7 @@ socket.on('user-disconnected', (userId) => {
   const pElement = document.createElement('p');
   pElement.id = 'Message';
   pElement.classList.add('p-2');
-  pElement.textContent = "User Disconnectd " + userId;
+  pElement.textContent = `${userId} Left The Chat`
 
 
   divElement.appendChild(pElement);
@@ -172,7 +172,7 @@ socket.on('user-connected', (userId) => {
     const pElement = document.createElement('p');
     pElement.id = 'Message';
     pElement.classList.add('p-2');
-    pElement.textContent = "User Connected " + userId;
+    pElement.textContent = `${userId} Joined The Chat`
   
   
     divElement.appendChild(pElement);
@@ -247,12 +247,12 @@ function joinRoom(roomName) {
     let userId = localStorage.getItem("user")
     socket.emit('join-room', roomName,userId);
     ChatConatiner.innerHTML = '';
-    roomDisplay.textContent = `Room ID: ${roomName}`;
+    roomDisplay.textContent = `Chat ID: ${roomName}`;
 }
 
 
 function generateRoomName() {
-    return "room_" + Math.random().toString(36).substr(2, 9);
+    return Math.random().toString(36).substr(2, 9);
 }
 
 document.getElementById("join-global").onclick=()=>{
