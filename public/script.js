@@ -5,6 +5,10 @@ const ChatConatiner = document.getElementById('ChatConatiner')
 
 socket.on("message", (message,userId)=> {
     
+    const typingNotifications = ChatConatiner.querySelectorAll('.typing-notification');
+    typingNotifications.forEach((notification) => {
+            ChatConatiner.removeChild(notification);})
+
     const messageWithLinks = convertUrlsToAnchors(message);
     const divElement = document.createElement('div');
     divElement.id = 'container';
@@ -193,7 +197,7 @@ function sendTypingStatus() {
     typingTimeout = setTimeout(() => {
         isTyping = false;
         socket.emit("typing", false,userId);
-    }, 222); 
+    }, 1000); 
 }
 
 inputMessage.addEventListener("input", sendTypingStatus);
@@ -221,9 +225,8 @@ socket.on("typing", (userId, isTyping) => {
 
 const roomInput = document.getElementById('roomInput');
 const roomDisplay = document.getElementById('roomDisplay');
-const joinRoomBtn = document.getElementById('joinRoomBtn'); // Add a "Join Room" button
+const joinRoomBtn = document.getElementById('joinRoomBtn'); 
 
-// Function to join an existing room
 joinRoomBtn.addEventListener('click', () => {
     if(roomInput.value.trim()){
         roomName = roomInput.value
@@ -239,7 +242,7 @@ joinRoomBtn.addEventListener('click', () => {
     joinRoom(roomName);}
 });
 
-// Function to join a room
+
 function joinRoom(roomName) {
     let userId = localStorage.getItem("user")
     socket.emit('join-room', roomName,userId);
@@ -247,7 +250,7 @@ function joinRoom(roomName) {
     roomDisplay.textContent = `Room ID: ${roomName}`;
 }
 
-// Function to generate a unique room name or ID
+
 function generateRoomName() {
     return "room_" + Math.random().toString(36).substr(2, 9);
 }
