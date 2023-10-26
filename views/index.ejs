@@ -12,7 +12,8 @@
 <body class="font-poppin h-screen flex bg-black justify-center items-center">
     <div class="grid text-white gap-3 text-center">
         <h1 class="text-2xl font-semibold">Secret Chat 🦄</h1>
-        <div id="ChatConatiner" class="overflow-scroll overflow-x-hidden break-words gap-2 flex flex-col space-y-2 border border-white w-80 p-4" style="height: 30rem;">
+        <div id="roomDisplay"></div>
+        <div id="ChatConatiner" class=" hidden overflow-scroll overflow-x-hidden break-words gap-2 flex flex-col space-y-2 border border-white w-80 p-4" style="height: 30rem;">
             <!-- <div id="sender" class="border self-start border-white rounded-bl-lg rounded-r-lg break-words">
                 <p class="px-3 break-words text-left">hi</p>
             </div>
@@ -20,7 +21,7 @@
                 <p class="px-3 break-words text-left" id="Message">dgfdsagsjdasddsdsdsadasdsdasdasdjhasdjashdkjahkjahkj</p>
             </div> -->
         </div>   
-        <div class="flex">
+        <div class="flex hidden" id="Chatconatiner">
             
             <label class= "border border-white   h-9 w-80 flex justify-center items-center">
                 <input type="text" class="border rounded-none border-r-0  border-l-0 b border-white bg-black  w-72 h-9 block pr-1  outline-none" placeholder="Message" id="inputMessage">
@@ -28,6 +29,10 @@
                 <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
               </svg>
             </label>
+        </div>
+        <div class="grid gap-5" id="rooms">
+        <input id="roomInput"  class=" border border-white px-2 bg-transparent outline-none py-1" type="text" placeholder="Enter Room ID">
+        <button id="joinRoomBtn" class="border p-1 border-white">Create or Join Room</button>        
         </div>
     </div>
 
