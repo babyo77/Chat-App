@@ -146,7 +146,7 @@ setUserName()
 socket.on('user-disconnected', (userId) => {
   const divElement = document.createElement('div');
   divElement.id = 'container';
-  divElement.classList.add('border', 'self-start', 'border-red-600', 'text-justify', 'rounded-br-lg' , 'rounded-l-lg' ,'cursor-pointer','text-red-500');
+  divElement.classList.add('border', 'self-start', 'border-red-600', 'text-justify', 'rounded-bl-lg', 'rounded-r-lg' ,'cursor-pointer','text-red-500');
 
   const pElement = document.createElement('p');
   pElement.id = 'Message';
@@ -163,7 +163,7 @@ socket.on('user-disconnected', (userId) => {
 socket.on('user-connected', (userId) => {
     const divElement = document.createElement('div');
     divElement.id = 'container';
-    divElement.classList.add('border', 'self-start','border-green-300' , 'text-justify', 'rounded-br-lg' , 'rounded-l-lg' ,'cursor-pointer','text-green-600');
+    divElement.classList.add('border', 'self-start','border-green-300' , 'text-justify', 'rounded-bl-lg', 'rounded-r-lg' ,'cursor-pointer','text-green-600');
   
     const pElement = document.createElement('p');
     pElement.id = 'Message';
