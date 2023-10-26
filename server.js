@@ -18,6 +18,8 @@ app.get('/', (req, res) => {
 const rooms = {};
 
 io.on('connection', (socket) => {
+
+   
   // Function to join a room
   socket.on('join-room', (roomName, userId) => {
     // Create the room if it doesn't exist
@@ -35,7 +37,7 @@ io.on('connection', (socket) => {
     socket.userId = userId;
 
     // Add the user to the room's user list
-    rooms[roomName].users.push({ userId, socket });
+    rooms[roomName].users.push(userId);
 
     // Notify other users in the room about the new connection
     socket.broadcast.to(roomName).emit('user-connected', userId);
@@ -64,12 +66,16 @@ io.on('connection', (socket) => {
     if (rooms[roomName]) {
       rooms[roomName].users = rooms[roomName].users.filter((user) => user.userId !== userId);
     }
-
+        
     // Notify other users in the room about the disconnection
     socket.broadcast.to(roomName).emit('user-disconnected', userId);
 
+
     console.log(`User ${userId} disconnected from room ${roomName}`);
   });
+
+  console.log(rooms)
+  
 });
 
 server.listen(PORT, () => {

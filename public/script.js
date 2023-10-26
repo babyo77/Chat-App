@@ -120,6 +120,9 @@ function setUserName(){
     try {
         if(!localStorage.getItem('user')){
             userId = prompt("Enter Your Name")
+            if(userId.length>23){
+                alert("Username To Long")
+            }
             if(!userId.trim()){
              location.reload()
             }else{
@@ -143,7 +146,7 @@ setUserName()
 socket.on('user-disconnected', (userId) => {
   const divElement = document.createElement('div');
   divElement.id = 'container';
-  divElement.classList.add('border', 'self-start', 'border-white', 'text-justify', 'rounded-br-lg' , 'rounded-l-lg' ,'cursor-pointer');
+  divElement.classList.add('border', 'self-start', 'border-red-600', 'text-justify', 'rounded-br-lg' , 'rounded-l-lg' ,'cursor-pointer','text-red-500');
 
   const pElement = document.createElement('p');
   pElement.id = 'Message';
@@ -160,7 +163,7 @@ socket.on('user-disconnected', (userId) => {
 socket.on('user-connected', (userId) => {
     const divElement = document.createElement('div');
     divElement.id = 'container';
-    divElement.classList.add('border', 'self-start', 'border-white', 'text-justify', 'rounded-br-lg' , 'rounded-l-lg' ,'cursor-pointer');
+    divElement.classList.add('border', 'self-start','border-green-300' , 'text-justify', 'rounded-br-lg' , 'rounded-l-lg' ,'cursor-pointer','text-green-600');
   
     const pElement = document.createElement('p');
     pElement.id = 'Message';
@@ -216,7 +219,6 @@ socket.on("typing", (userId, isTyping) => {
 });
 
 
-
 const roomInput = document.getElementById('roomInput');
 const roomDisplay = document.getElementById('roomDisplay');
 const joinRoomBtn = document.getElementById('joinRoomBtn'); // Add a "Join Room" button
@@ -250,4 +252,10 @@ function generateRoomName() {
     return "room_" + Math.random().toString(36).substr(2, 9);
 }
 
-// ... (the rest of your code)
+document.getElementById("join-global").onclick=()=>{
+    document.getElementById("rooms").style.display="none"
+    document.getElementById("Chatconatiner").style.display="flex"
+    ChatConatiner.style.display="flex"
+    joinRoom("Global")
+}
+
