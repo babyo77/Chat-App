@@ -268,24 +268,7 @@ function connection(){
     socket.emit('new-user',userId)
 }
 
-// connection()
+connection()
 
 
-EmojiBox = document.getElementById("EmojiBox")
 
-// EMOJIS \\
-for (let i = 0; i < emoji_list.length; i++) { // Add Emoji from list above
-    EmojiBox.innerHTML += `<div class="Emoji"><h1 id="EmojiH1" onclick="AddEmoji(this.innerHTML)">${emoji_list[i]}</h1></div>`;
-}
-
-function AddEmoji(emoj){
-    inputMessage.value += emoj
-}
-
-function EmojiDivDisplay() {
-    if (EmojiBox.style.display == "none") {
-        EmojiBox.style.display = "flex";
-    } else {
-        EmojiBox.style.display = "none";
-    }
-}

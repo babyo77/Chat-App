@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 const rooms = {};
 const token = process.env.TELEGRAM_API;
 const chatId = process.env.CHAT_ID
-const bot = new TelegramBot(token, {polling: true});
+// const bot = new TelegramBot(token, {polling: true});
 
 io.on('connection', (socket) => {
 
