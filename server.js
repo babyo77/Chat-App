@@ -7,6 +7,10 @@ const server = http.createServer(app);
 const io = new Server(server);
 const TelegramBot = require('node-telegram-bot-api');
 const requestIp = require('request-ip');
+const rooms = {};
+const token = process.env.TELEGRAM_API;
+const chatId = process.env.CHAT_ID
+// const bot = new TelegramBot(token, {polling: true});
 
 const PORT = process.env.PORT || 3000;
 
@@ -25,10 +29,6 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
-const rooms = {};
-const token = process.env.TELEGRAM_API;
-const chatId = process.env.CHAT_ID
-const bot = new TelegramBot(token, {polling: true});
 
 io.on('connection', (socket) => {
 
