@@ -263,12 +263,5 @@ document.getElementById("join-global").onclick=()=>{
     joinRoom("Global")
 }
 
-function connection(){
-    userId = localStorage.getItem('user')
-    socket.emit('new-user',userId)
-}
-
-connection()
-
 
 

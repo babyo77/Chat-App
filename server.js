@@ -5,40 +5,21 @@ const { Server } = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
-const TelegramBot = require('node-telegram-bot-api');
-const requestIp = require('request-ip');
 
 const PORT = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
-// app.use(requestIp.mw());
-// app.use((req, res, next) => {
-//     const clientIP = requestIp.getClientIp(req);
-//     const userAgent = req.get('user-agent'); 
-//     console.log(`User-Agent: ${userAgent}`);
-//     // bot.sendMessage(chatId, `Client IP:  ${clientIP}\nUser-Agent:  ${userAgent}`);
-//     next();
-//   });
+
 
 app.get('/', (req, res) => {
   res.render('index');
 });
 
 const rooms = {};
-const token = process.env.TELEGRAM_API;
-const chatId = process.env.CHAT_ID
-const bot = new TelegramBot(token, {polling: true});
 
 io.on('connection', (socket) => {
 
-   socket.on('new-user',userId=>{
-   try {
-    bot.sendMessage(chatId, `New User Logged In: ${userId}`);
-   } catch (error) {
-    console.log("error sending message")
-   }
-   })
   // Function to join a room
   socket.on('join-room', (roomName, userId) => {
     // Create the room if it doesn't exist
