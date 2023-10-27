@@ -12,14 +12,14 @@ const PORT = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
-app.use(requestIp.mw());
-app.use((req, res, next) => {
-    const clientIP = requestIp.getClientIp(req);
-    const userAgent = req.get('user-agent'); 
-    console.log(`User-Agent: ${userAgent}`);
-    // bot.sendMessage(chatId, `Client IP:  ${clientIP}\nUser-Agent:  ${userAgent}`);
-    next();
-  });
+
+// app.use(requestIp.mw());
+// app.use((req, res, next) => {
+//     const clientIP = requestIp.getClientIp(req);
+//     const userAgent = req.get('user-agent'); 
+//     console.log(`User-Agent: ${userAgent}`);
+//     next();
+//   });
 
 app.get('/', (req, res) => {
   res.render('index');
@@ -28,7 +28,6 @@ app.get('/', (req, res) => {
 const rooms = {};
 const token = process.env.TELEGRAM_API;
 const chatId = process.env.CHAT_ID
-const bot = new TelegramBot(token, {polling: true});
 
 io.on('connection', (socket) => {
 
