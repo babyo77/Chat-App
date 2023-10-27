@@ -19,7 +19,6 @@
     "nodemon": "^3.0.1",
     "postcss": "^8.4.31",
     "postcss-cli": "^10.1.0",
-    "request-ip": "^3.3.0",
     "socket.io": "^4.7.2",
     "tailwindcss": "^3.3.3"
   }

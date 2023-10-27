@@ -271,6 +271,8 @@ function connection(){
 // connection()
 
 
+EmojiBox = document.getElementById("EmojiBox")
+
 // EMOJIS \\
 for (let i = 0; i < emoji_list.length; i++) { // Add Emoji from list above
     EmojiBox.innerHTML += `<div class="Emoji"><h1 id="EmojiH1" onclick="AddEmoji(this.innerHTML)">${emoji_list[i]}</h1></div>`;
