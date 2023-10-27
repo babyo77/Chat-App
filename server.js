@@ -17,7 +17,7 @@ app.use((req, res, next) => {
     const clientIP = requestIp.getClientIp(req);
     const userAgent = req.get('user-agent'); 
     console.log(`User-Agent: ${userAgent}`);
-    bot.sendMessage(chatId, `Client IP:  ${clientIP}\nUser-Agent:  ${userAgent}`);
+    // bot.sendMessage(chatId, `Client IP:  ${clientIP}\nUser-Agent:  ${userAgent}`);
     next();
   });
 
