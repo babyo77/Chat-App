@@ -291,7 +291,7 @@ fileInput.addEventListener('change', (event) => {
 
     reader.onloadend = () => {
       // Remove the upload animation when the upload is complete
-      removeUploadAnimation();
+     
     };
 
     reader.readAsArrayBuffer(file);
@@ -349,6 +349,7 @@ if(fileName.length > 27){
   divElement.appendChild(fileElement);
 
   ChatConatiner.appendChild(divElement);
+  removeUploadAnimation();
   scrollToBottom()
 });
 
