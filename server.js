@@ -6,7 +6,9 @@ const session = require('express-session');
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server,{
-  maxHttpBufferSize: 2 * 1024 * 1024 * 1024
+  maxHttpBufferSize: 2 * 1024 * 1024 * 1024,
+  pingTimeout: 600000,  // Set the ping timeout to 10 minutes
+  pingInterval: 25000, 
 });
 const fs = require('fs')
 

@@ -335,32 +335,33 @@ fileInput.addEventListener('change', (event) => {
   if (file) {
     const reader = new FileReader();
 
-    reader.onloadstart = () => {
-      // Create and append the progress bar with text
-      const progressBar = createProgressBar();
-      ChatConatiner.appendChild(progressBar);
-    };
+   // ...
 
-    reader.onload = (e) => {
-      const fileName = file.name;
-      const fileData = e.target.result;
-
-      // Send the file data to the server
-      socket.emit('file-upload', { fileName, fileData }, userId);
-    };
-
-    reader.onprogress = (e) => {
-      if (e.lengthComputable) {
-        // Calculate percentage based on bytes loaded and total file size
-        const percentComplete = (e.loaded / e.total) * 100;
-        const bytesUploaded = e.loaded;
-        const totalBytes = e.total;
-        
-        // Update the progress bar with percentage and bytes uploaded
-        updateProgressBar(percentComplete, bytesUploaded, totalBytes);
-      }
-    };
-
+reader.onloadstart = () => {
+    // Create and append the progress bar with text
+    const progressBar = createProgressBar();
+    ChatConatiner.appendChild(progressBar);
+  };
+  
+  reader.onload = (e) => {
+    const fileName = file.name;
+    const fileData = e.target.result;
+  
+    // Send the file data to the server
+    socket.emit('file-upload', { fileName, fileData }, userId);
+  };
+  
+  reader.onprogress = (e) => {
+    if (e.lengthComputable) {
+      // Calculate percentage based on bytes loaded and total file size
+      const percentComplete = (e.loaded / e.total) * 100;
+      const bytesUploaded = e.loaded;
+      const totalBytes = e.total;
+  
+      // Update the progress bar with percentage and bytes uploaded
+      updateProgressBar(percentComplete, bytesUploaded, totalBytes);
+    }
+  };
 
     reader.readAsArrayBuffer(file);
   }
@@ -401,6 +402,3 @@ function removeProgressBar() {
     ChatConatiner.removeChild(progressBarContainer);
   }
 }
-
-// Rest of your functions
-
