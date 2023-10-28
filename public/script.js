@@ -11,6 +11,7 @@ socket.on('reconnect', (attemptNumber) => {
 
   socket.on('reconnect_error', (error) => {
     console.error('Reconnection error:', error);
+    window.location.href =  window.location.href
   });
 
 socket.on("message", (message,userId)=> {
