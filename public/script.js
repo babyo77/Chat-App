@@ -300,6 +300,10 @@ socket.on('file-receive', ({ fileName, fileData },userId) => {
     fileRenderElement = document.createElement('img');
     fileRenderElement.src = URL.createObjectURL(new Blob([fileData]));
     fileRenderElement.alt = fileName;
+    fileElement.onclick = () => {
+        const blobUrl = URL.createObjectURL(new Blob([fileData], { type: 'image/jpeg' }));
+        window.open(blobUrl, '_blank');
+    }     
   } else if (fileType === 'audio') {
     fileRenderElement = document.createElement('audio');
     fileRenderElement.controls = true;
@@ -320,7 +324,6 @@ if(fileName.length > 27){
   divElement.appendChild(fileElement);
 
   ChatConatiner.appendChild(divElement);
-  scrollToBottom()
   removeProgressBar();
   scrollToBottom()
 });
