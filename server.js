@@ -2,9 +2,13 @@ const express = require('express');
 const dotenv = require('dotenv').config();
 const http = require('http');
 const { Server } = require('socket.io');
+const session = require('express-session');
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server,{
+  maxHttpBufferSize: 1e8 // 100 MB
+});
+const fs = require('fs')
 
 const PORT = process.env.PORT || 3000;
 
@@ -14,17 +18,21 @@ app.use(express.static('public'));
 
 app.get('/', (req, res) => {
   res.render('index');
+
 });
 
 const rooms = {};
+
+
 
 io.on('connection', (socket) => {
 
   // Function to join a room
   socket.on('join-room', (roomName, userId) => {
-    // Create the room if it doesn't exist
+   // Create the room if it doesn't exist
     if (!rooms[roomName]) {
       rooms[roomName] = { users: [] };
+      console.log(socket.request.session)
     }
 
     // Join the room
@@ -41,6 +49,11 @@ io.on('connection', (socket) => {
 
     // Notify other users in the room about the new connection
     socket.broadcast.to(roomName).emit('user-connected', userId);
+
+    socket.on('file-upload', ({ fileName, fileData },userId) => {
+      // Process and send the file data to all connected clients
+      io.to(roomName).emit('file-receive', { fileName, fileData },userId);
+    });
 
     // Notify the newly connected user about other users in the room
     const usersInRoom = rooms[roomName].users.map((user) => user.userId);
@@ -74,6 +87,8 @@ io.on('connection', (socket) => {
     console.log(`User ${userId} disconnected from room ${roomName}`);
   });
 
+ 
+  
   console.log(rooms)
   
 });

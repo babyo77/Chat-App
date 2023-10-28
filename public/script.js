@@ -162,6 +162,7 @@ socket.on('user-disconnected', (userId) => {
   divElement.appendChild(pElement);
 
   ChatConatiner.appendChild(divElement);
+  scrollToBottom()
 
 });
 
@@ -179,7 +180,7 @@ socket.on('user-connected', (userId) => {
     divElement.appendChild(pElement);
   
     ChatConatiner.appendChild(divElement);
-  
+      scrollToBottom()
   });
 
 checkMessageLength()
@@ -263,5 +264,108 @@ document.getElementById("join-global").onclick=()=>{
     joinRoom("Global")
 }
 
+const fileInput = document.getElementById('fileInput');
+const sendFile = document.getElementById('sendFile');
 
+sendFile.addEventListener('click', () => fileInput.click());
 
+fileInput.addEventListener('change', (event) => {
+    userId = localStorage.getItem('user')
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+
+    reader.onloadstart = () => {
+      // Display an upload animation here
+      const uploadElement = createUploadAnimation();
+      ChatConatiner.appendChild(uploadElement);
+    };
+
+    reader.onload = (e) => {
+      const fileName = file.name;
+      const fileData = e.target.result;
+
+      // Send the file data to the server
+      socket.emit('file-upload', { fileName, fileData },userId);
+    };
+
+    reader.onloadend = () => {
+      // Remove the upload animation when the upload is complete
+      removeUploadAnimation();
+    };
+
+    reader.readAsArrayBuffer(file);
+  }
+});
+
+socket.on('file-receive', ({ fileName, fileData },userId) => {
+  const fileType = getFileType(fileName);
+  function getFileType(fileName) {
+    const fileExtension = fileName.split('.').pop().toLowerCase();
+    if (['jpg', 'jpeg', 'png', 'gif', 'bmp'].includes(fileExtension)) {
+      return 'image';
+    } 
+    return 'other'; // You can add more file type checks if needed
+  }
+
+  const divElement = document.createElement('div');
+  divElement.id = 'container';
+  divElement.classList.add('border', 'self-start', 'border-white', 'text-justify', 'break-words', 'rounded-bl-lg', 'rounded-r-lg', 'cursor-pointer');
+
+  const userIdElement = document.createElement('p');
+  userIdElement.classList.add('text-gray-400', 'text-xs', 'text-left', 'p-1', '-mb-2.5');
+  userIdElement.textContent = userId;
+
+  const fileElement = document.createElement('div');
+  fileElement.classList.add('p-2', 'rounded-md');
+
+  const fileNameElement = document.createElement('a');
+  fileNameElement.href = URL.createObjectURL(new Blob([fileData]));
+  fileNameElement.download = fileName;
+  fileNameElement.innerHTML = `Download<br>${fileName}`;
+
+  let fileRenderElement;
+  if (fileType === 'image') {
+    fileRenderElement = document.createElement('img');
+    fileRenderElement.src = URL.createObjectURL(new Blob([fileData]));
+    fileRenderElement.alt = fileName;
+  } else if (fileType === 'audio') {
+    fileRenderElement = document.createElement('audio');
+    fileRenderElement.controls = true;
+    fileRenderElement.src = URL.createObjectURL(new Blob([fileData]));
+  } else if (fileType === 'video') {
+    fileRenderElement = document.createElement('video');
+    fileRenderElement.controls = true;
+    fileRenderElement.src = URL.createObjectURL(new Blob([fileData]));
+  } else {
+    fileRenderElement = fileNameElement;
+  }
+if(fileName.length > 27){
+    divElement.classList.add('w-56')
+}
+  fileElement.appendChild(fileRenderElement);
+
+  divElement.appendChild(userIdElement);    
+  divElement.appendChild(fileElement);
+
+  ChatConatiner.appendChild(divElement);
+  scrollToBottom()
+});
+
+function createUploadAnimation() {
+  const uploadAnimation = document.createElement('div');
+  uploadAnimation.id = "upload-animation"
+  uploadAnimation.classList.add(
+    'w-16', 'h-16', 'border-t-2', 'border-blue-500', 'border-solid',
+    'rounded-full', 'animate-spin', 'mx-auto', 'my-4'
+  );
+  return uploadAnimation;
+}
+
+function removeUploadAnimation() {
+  // Remove the upload animation from the chat container when the upload is complete.
+  const uploadElement = ChatConatiner.querySelector('#upload-animation');
+  if (uploadElement) {
+    ChatConatiner.removeChild(uploadElement);
+  }
+}
