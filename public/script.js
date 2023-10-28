@@ -264,85 +264,10 @@ document.getElementById("join-global").onclick=()=>{
     joinRoom("Global")
 }
 
+
+
 const fileInput = document.getElementById('fileInput');
 const sendFile = document.getElementById('sendFile');
-
-sendFile.addEventListener('click', () => fileInput.click());
-fileInput.addEventListener('change', (event) => {
-    userId = localStorage.getItem('user');
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-  
-      reader.onloadstart = () => {
-        // Create and append the progress bar
-        const progressBar = createProgressBar();
-        ChatConatiner.appendChild(progressBar);
-      };
-  
-      reader.onload = (e) => {
-        const fileName = file.name;
-        const fileData = e.target.result;
-  
-        // Send the file data to the server
-        socket.emit('file-upload', { fileName, fileData }, userId);
-      };
-  
-      reader.onprogress = (e) => {
-        if (e.lengthComputable) {
-          const percentComplete = (e.loaded / e.total) * 100;
-          // Update the progress bar
-          updateProgressBar(percentComplete);
-        }
-      };
-  
-      reader.onloadend = () => {
-        // Remove the progress bar when the upload is complete
-    
-      };
-  
-      reader.readAsArrayBuffer(file);
-    }
-  });
-  
-
-  function createProgressBar() {
-    const progressBar = document.createElement('div');
-    progressBar.id = 'progress-bar';
-    progressBar.classList.add('h-4', 'bg-blue-500');
-    return progressBar;
-  }
-  
-  function updateProgressBar(percentComplete) {
-    const progressBar = ChatConatiner.querySelector('#progress-bar');
-    if (progressBar) {
-      progressBar.style.width = percentComplete + '%';
-    }
-  }
-  
-  function removeProgressBar() {
-    const progressBar = ChatConatiner.querySelector('#progress-bar');
-    if (progressBar) {
-      ChatConatiner.removeChild(progressBar);
-    }
-  }
-  
-  function createUploadAnimation() {
-    const uploadAnimation = document.createElement('div');
-    uploadAnimation.id = 'upload-animation';
-    uploadAnimation.classList.add(
-      'w-16', 'h-16', 'border-t-2', 'border-blue-500', 'border-solid',
-      'rounded-full', 'animate-spin', 'mx-auto', 'my-4'
-    );
-    return uploadAnimation;
-  }
-  
-  function removeUploadAnimation() {
-    const uploadAnimation = ChatConatiner.querySelector('#progress-bar');
-    if (uploadAnimation) {
-      ChatConatiner.removeChild(uploadAnimation);
-    }
-  }
 
 socket.on('file-receive', ({ fileName, fileData },userId) => {
   const fileType = getFileType(fileName);
@@ -395,10 +320,87 @@ if(fileName.length > 27){
   divElement.appendChild(fileElement);
 
   ChatConatiner.appendChild(divElement);
-  removeUploadAnimation();
+  removeProgressBar();
   scrollToBottom()
 });
 
 
 
+
+sendFile.addEventListener('click', () => fileInput.click());
+
+fileInput.addEventListener('change', (event) => {
+  userId = localStorage.getItem('user');
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+
+    reader.onloadstart = () => {
+      // Create and append the progress bar with text
+      const progressBar = createProgressBar();
+      ChatConatiner.appendChild(progressBar);
+    };
+
+    reader.onload = (e) => {
+      const fileName = file.name;
+      const fileData = e.target.result;
+
+      // Send the file data to the server
+      socket.emit('file-upload', { fileName, fileData }, userId);
+    };
+
+    reader.onprogress = (e) => {
+      if (e.lengthComputable) {
+        // Calculate percentage based on bytes loaded and total file size
+        const percentComplete = (e.loaded / e.total) * 100;
+        const bytesUploaded = e.loaded;
+        const totalBytes = e.total;
+        
+        // Update the progress bar with percentage and bytes uploaded
+        updateProgressBar(percentComplete, bytesUploaded, totalBytes);
+      }
+    };
+
+
+    reader.readAsArrayBuffer(file);
+  }
+});
+
+
+function createProgressBar() {
+  const progressBarContainer = document.createElement('div');
+  progressBarContainer.id = 'progress-bar-container';
+  progressBarContainer.classList.add('relative');
+
+  const progressBar = document.createElement('div');
+  progressBar.id = 'progress-bar';
+  progressBar.classList.add('h-4', 'bg-blue-500');
+
+  const progressBarText = document.createElement('p');
+  progressBarText.id = 'progress-bar-text';
+  progressBarText.classList.add('absolute', 'top-1/2', 'left-1/2', 'transform', '-translate-x-1/2', '-translate-y-1/2');
+
+  progressBarContainer.appendChild(progressBar);
+  progressBarContainer.appendChild(progressBarText);
+
+  return progressBarContainer;
+}
+
+function updateProgressBar(percentComplete, bytesUploaded, totalBytes) {
+  const progressBar = ChatConatiner.querySelector('#progress-bar');
+  const progressBarText = ChatConatiner.querySelector('#progress-bar-text');
+  if (progressBar && progressBarText) {
+    progressBar.style.width = percentComplete + '%';
+    progressBarText.textContent = `${Math.round(percentComplete)}%`;
+  }
+}
+
+function removeProgressBar() {
+  const progressBarContainer = ChatConatiner.querySelector('#progress-bar-container');
+  if (progressBarContainer) {
+    ChatConatiner.removeChild(progressBarContainer);
+  }
+}
+
+// Rest of your functions
 
