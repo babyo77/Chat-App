@@ -320,6 +320,7 @@ if(fileName.length > 27){
   divElement.appendChild(fileElement);
 
   ChatConatiner.appendChild(divElement);
+  scrollToBottom()
   removeProgressBar();
   scrollToBottom()
 });
