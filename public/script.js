@@ -2,7 +2,6 @@ const socket = io();
 const inputMessage = document.getElementById("inputMessage")
 const sendBtn = document.getElementById("sendBtn")
 const ChatConatiner = document.getElementById('ChatConatiner')
-const emoji_list = ["😄","😃","😀","😁","😆","😅","😂","🤣","🥲","🥹","😊","😇","🙂","🙃","😉","😌","😍","🥰","😘","😗","😙","😚","😋","😛","😝","😜","🤪","🤨","🧐","🤓","😎","🥸","🤩","🥳","😏","😒","😞","😔","😟","😕","🙁","☹️","😣","😖","😫","😩","🥺","😢","😭","😮‍💨","😤","😠","😡","🤬","🤯","😳","🥵","🥶","😱","😨","😰","😥","😓","🫣","🤗","🫡","🤔","🫢","🤭","🤫","🤥","😶","😶‍🌫️","😐","😑","😬","🫠","🙄","😯","😦","😧","😮","😲","🥱","😴","🤤","😪","😵","😵‍💫","🫥","🤐","🥴","🤢","🤮","🤧","😷","🤒","🤕","🤑","🤠","😈","👿","👹","👺","🤡","💩","👻","💀","☠️","👽","👾","🤖","🎃","😺","😸","😹","😻","😼","😽","🙀","😿","😾"];
 
 socket.on("message", (message,userId)=> {
 
@@ -268,6 +267,7 @@ document.getElementById("join-global").onclick=()=>{
 
 const fileInput = document.getElementById('fileInput');
 const sendFile = document.getElementById('sendFile');
+let uploadfileName = generateRoomName()
 
 socket.on('file-receive', ({ fileName, fileData },userId) => {
   const fileType = getFileType(fileName);
@@ -320,7 +320,7 @@ if(fileName.length > 27){
   divElement.appendChild(fileElement);
 
   ChatConatiner.appendChild(divElement);
-  removeProgressBar(fileName);
+  removeProgressBar(uploadfileName);
   scrollToBottom()
 });
 
@@ -335,11 +335,12 @@ fileInput.addEventListener('change', (event) => {
    if (file && file.size <= 128 * 1024 * 1024) {
     const reader = new FileReader();
 
-   // ...
+   
 
 reader.onloadstart = () => {
     // Create and append the progress bar with text
-    const progressBar = createProgressBar(fileName);
+    const progressBar = createProgressBar(uploadfileName);
+    console.log(uploadfileName)
     ChatConatiner.appendChild(progressBar);
   };
   
@@ -377,12 +378,12 @@ function createProgressBar(fileName) {
   progressBarContainer.classList.add('relative');
 
   const progressBar = document.createElement('div');
-  progressBar.id = 'progress-bar';
+  progressBar.id = fileName
   progressBar.classList.add('h-4', 'bg-blue-500');
 
   const progressBarText = document.createElement('p');
   progressBarText.id = 'progress-bar-text';
-  progressBarText.classList.add('absolute', 'top-1/2', 'left-1/2', 'transform', '-translate-x-1/2', '-translate-y-1/2');
+  progressBarText.classList.add('absolute', 'text-white', 'top-1/2', 'left-1/2', 'transform', '-translate-x-1/2', '-translate-y-1/2');
 
   progressBarContainer.appendChild(progressBar);
   progressBarContainer.appendChild(progressBarText);
@@ -400,7 +401,8 @@ function updateProgressBar(percentComplete, bytesUploaded, totalBytes) {
 }
 
 function removeProgressBar(fileName) {
-  const progressBarContainer = ChatConatiner.querySelector(fileName);
+  const progressBarContainer = ChatConatiner.querySelector(`#${fileName}`);
+  console.log(fileName)
   if (progressBarContainer) {
     ChatConatiner.removeChild(progressBarContainer);
   }
