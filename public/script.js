@@ -320,7 +320,7 @@ if(fileName.length > 27){
   divElement.appendChild(fileElement);
 
   ChatConatiner.appendChild(divElement);
-  removeProgressBar();
+  removeProgressBar(fileName);
   scrollToBottom()
 });
 
@@ -339,7 +339,7 @@ fileInput.addEventListener('change', (event) => {
 
 reader.onloadstart = () => {
     // Create and append the progress bar with text
-    const progressBar = createProgressBar();
+    const progressBar = createProgressBar(fileName);
     ChatConatiner.appendChild(progressBar);
   };
   
@@ -371,9 +371,9 @@ reader.onloadstart = () => {
 });
 
 
-function createProgressBar() {
+function createProgressBar(fileName) {
   const progressBarContainer = document.createElement('div');
-  progressBarContainer.id = 'progress-bar-container';
+  progressBarContainer.id = fileName;
   progressBarContainer.classList.add('relative');
 
   const progressBar = document.createElement('div');
@@ -399,8 +399,8 @@ function updateProgressBar(percentComplete, bytesUploaded, totalBytes) {
   }
 }
 
-function removeProgressBar() {
-  const progressBarContainer = ChatConatiner.querySelector('#progress-bar-container');
+function removeProgressBar(fileName) {
+  const progressBarContainer = ChatConatiner.querySelector(fileName);
   if (progressBarContainer) {
     ChatConatiner.removeChild(progressBarContainer);
   }
