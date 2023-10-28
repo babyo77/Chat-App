@@ -320,7 +320,7 @@ if(fileName.length > 27){
   divElement.appendChild(fileElement);
 
   ChatConatiner.appendChild(divElement);
-  removeProgressBar(fileName);
+  removeProgressBar();
   scrollToBottom()
 });
 
@@ -335,12 +335,11 @@ fileInput.addEventListener('change', (event) => {
    if (file && file.size <= 128 * 1024 * 1024) {
     const reader = new FileReader();
 
-   
+   // ...
 
 reader.onloadstart = () => {
     // Create and append the progress bar with text
-    fileName - file.name
-    const progressBar = createProgressBar(fileName);
+    const progressBar = createProgressBar();
     ChatConatiner.appendChild(progressBar);
   };
   
@@ -367,14 +366,15 @@ reader.onloadstart = () => {
     reader.readAsArrayBuffer(file);
   }else{
     alert('File size should be up to 128 MB');
+
     fileInput.value = null;
   }
 });
 
 
-function createProgressBar(fileName) {
+function createProgressBar() {
   const progressBarContainer = document.createElement('div');
-  progressBarContainer.id = fileName;
+  progressBarContainer.id = 'progress-bar-container';
   progressBarContainer.classList.add('relative');
 
   const progressBar = document.createElement('div');
@@ -400,8 +400,8 @@ function updateProgressBar(percentComplete, bytesUploaded, totalBytes) {
   }
 }
 
-function removeProgressBar(fileName) {
-  const progressBarContainer = ChatConatiner.querySelector(fileName);
+function removeProgressBar() {
+  const progressBarContainer = ChatConatiner.querySelector('#progress-bar-container');
   if (progressBarContainer) {
     ChatConatiner.removeChild(progressBarContainer);
   }
