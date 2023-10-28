@@ -309,7 +309,7 @@ socket.on('file-receive', ({ fileName, fileData },userId) => {
   }
 
   const divElement = document.createElement('div');
-  divElement.id = 'container';
+  divElement.id = 'files';
   divElement.classList.add('border', 'self-start', 'border-white', 'text-justify', 'break-words', 'rounded-bl-lg', 'rounded-r-lg', 'cursor-pointer');
 
   const userIdElement = document.createElement('p');
