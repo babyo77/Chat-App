@@ -9,6 +9,11 @@ const io = new Server(server,{
   maxHttpBufferSize: 2 * 1024 * 1024 * 1024,
   pingTimeout: 600000,  // Set the ping timeout to 10 minutes
   pingInterval: 25000, 
+  reconnection: true,       // Enable reconnection
+  reconnectionAttempts: 100,  // Number of reconnection attempts
+  reconnectionDelay: 1000,  // Delay between reconnection attempts (in milliseconds)
+  reconnectionDelayMax: 5000,  // Maximum delay between reconnection attempts
+  randomizationFactor: 0.5,
 });
 const fs = require('fs')
 
