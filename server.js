@@ -6,7 +6,7 @@ const session = require('express-session');
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server,{
-  maxHttpBufferSize: 1e8 // 100 MB
+  maxHttpBufferSize: 2 * 1024 * 1024 * 1024
 });
 const fs = require('fs')
 

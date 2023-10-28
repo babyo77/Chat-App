@@ -268,35 +268,81 @@ const fileInput = document.getElementById('fileInput');
 const sendFile = document.getElementById('sendFile');
 
 sendFile.addEventListener('click', () => fileInput.click());
-
 fileInput.addEventListener('change', (event) => {
-    userId = localStorage.getItem('user')
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
+    userId = localStorage.getItem('user');
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+  
+      reader.onloadstart = () => {
+        // Create and append the progress bar
+        const progressBar = createProgressBar();
+        ChatConatiner.appendChild(progressBar);
+      };
+  
+      reader.onload = (e) => {
+        const fileName = file.name;
+        const fileData = e.target.result;
+  
+        // Send the file data to the server
+        socket.emit('file-upload', { fileName, fileData }, userId);
+      };
+  
+      reader.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const percentComplete = (e.loaded / e.total) * 100;
+          // Update the progress bar
+          updateProgressBar(percentComplete);
+        }
+      };
+  
+      reader.onloadend = () => {
+        // Remove the progress bar when the upload is complete
+    
+      };
+  
+      reader.readAsArrayBuffer(file);
+    }
+  });
+  
 
-    reader.onloadstart = () => {
-      // Display an upload animation here
-      const uploadElement = createUploadAnimation();
-      ChatConatiner.appendChild(uploadElement);
-    };
-
-    reader.onload = (e) => {
-      const fileName = file.name;
-      const fileData = e.target.result;
-
-      // Send the file data to the server
-      socket.emit('file-upload', { fileName, fileData },userId);
-    };
-
-    reader.onloadend = () => {
-      // Remove the upload animation when the upload is complete
-     
-    };
-
-    reader.readAsArrayBuffer(file);
+  function createProgressBar() {
+    const progressBar = document.createElement('div');
+    progressBar.id = 'progress-bar';
+    progressBar.classList.add('h-4', 'bg-blue-500');
+    return progressBar;
   }
-});
+  
+  function updateProgressBar(percentComplete) {
+    const progressBar = ChatConatiner.querySelector('#progress-bar');
+    if (progressBar) {
+      progressBar.style.width = percentComplete + '%';
+    }
+  }
+  
+  function removeProgressBar() {
+    const progressBar = ChatConatiner.querySelector('#progress-bar');
+    if (progressBar) {
+      ChatConatiner.removeChild(progressBar);
+    }
+  }
+  
+  function createUploadAnimation() {
+    const uploadAnimation = document.createElement('div');
+    uploadAnimation.id = 'upload-animation';
+    uploadAnimation.classList.add(
+      'w-16', 'h-16', 'border-t-2', 'border-blue-500', 'border-solid',
+      'rounded-full', 'animate-spin', 'mx-auto', 'my-4'
+    );
+    return uploadAnimation;
+  }
+  
+  function removeUploadAnimation() {
+    const uploadAnimation = ChatConatiner.querySelector('#progress-bar');
+    if (uploadAnimation) {
+      ChatConatiner.removeChild(uploadAnimation);
+    }
+  }
 
 socket.on('file-receive', ({ fileName, fileData },userId) => {
   const fileType = getFileType(fileName);
@@ -353,20 +399,6 @@ if(fileName.length > 27){
   scrollToBottom()
 });
 
-function createUploadAnimation() {
-  const uploadAnimation = document.createElement('div');
-  uploadAnimation.id = "upload-animation"
-  uploadAnimation.classList.add(
-    'w-16', 'h-16', 'border-t-2', 'border-blue-500', 'border-solid',
-    'rounded-full', 'animate-spin', 'mx-auto', 'my-4'
-  );
-  return uploadAnimation;
-}
 
-function removeUploadAnimation() {
-  // Remove the upload animation from the chat container when the upload is complete.
-  const uploadElement = ChatConatiner.querySelector('#upload-animation');
-  if (uploadElement) {
-    ChatConatiner.removeChild(uploadElement);
-  }
-}
+
+
