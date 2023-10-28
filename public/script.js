@@ -332,7 +332,7 @@ sendFile.addEventListener('click', () => fileInput.click());
 fileInput.addEventListener('change', (event) => {
   userId = localStorage.getItem('user');
   const file = event.target.files[0];
-  if (file) {
+   if (file && file.size <= 128 * 1024 * 1024) {
     const reader = new FileReader();
 
    // ...
@@ -364,6 +364,9 @@ reader.onloadstart = () => {
   };
 
     reader.readAsArrayBuffer(file);
+  }else{
+    alert('File size should be up to 128 MB');
+    fileInput.value = null;
   }
 });
 
