@@ -279,7 +279,7 @@ document.getElementById("join-global").onclick=()=>{
 const fileInput = document.getElementById('fileInput');
 const sendFile = document.getElementById('sendFile');
 
-socket.on('file-receive', ({ fileName, fileData },userId) => {
+socket.on('file-receive', ({ fileName, fileData, fileSize },userId) => {
   const fileType = getFileType(fileName);
   function getFileType(fileName) {
     const fileExtension = fileName.split('.').pop().toLowerCase();
@@ -300,10 +300,31 @@ socket.on('file-receive', ({ fileName, fileData },userId) => {
   const fileElement = document.createElement('div');
   fileElement.classList.add('p-2', 'rounded-md');
 
+  function formatFileSize(bytes) {
+    if (bytes < 1024) {
+      return `${bytes} bytes`;
+    } else if (bytes < 1024 * 1024) {
+      return `${(bytes / 1024).toFixed(2)} KB`;
+    } else if (bytes < 1024 * 1024 * 1024) {
+      return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+    } else {
+      return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+    }
+  }
+  
+  // Example usage:
+  const incomingFileSize = fileSize; // Replace with your file size in bytes
+  const fileSizeFormatted = formatFileSize(incomingFileSize);
+
+socket.on('disconnect',()=>{
+  alert('You are Disconnected')
+  window.location.href = window.location.href
+})
+  
   const fileNameElement = document.createElement('a');
   fileNameElement.href = URL.createObjectURL(new Blob([fileData]));
   fileNameElement.download = fileName;
-  fileNameElement.innerHTML = `Download<br>${fileName}`;
+  fileNameElement.innerHTML = `Download ${fileSizeFormatted}<br>${fileName}`;
 
   let fileRenderElement;
   if (fileType === 'image') {
@@ -360,9 +381,10 @@ reader.onloadstart = () => {
   reader.onload = (e) => {
     const fileName = file.name;
     const fileData = e.target.result;
+    const fileSize = file.size
   
     // Send the file data to the server
-    socket.emit('file-upload', { fileName, fileData }, userId);
+    socket.emit('file-upload', { fileName, fileData , fileSize}, userId);
   };
   
   reader.onprogress = (e) => {

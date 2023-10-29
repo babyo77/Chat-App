@@ -6,18 +6,14 @@ const session = require('express-session');
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server,{
-  maxHttpBufferSize: 2 * 1024 * 1024 * 1024,
+  maxHttpBufferSize: 1e8,
   pingTimeout: 600000,  // Set the ping timeout to 10 minutes
   pingInterval: 25000, 
-  reconnection: true,       // Enable reconnection
-  reconnectionAttempts: 100,  // Number of reconnection attempts
-  reconnectionDelay: 1000,  // Delay between reconnection attempts (in milliseconds)
-  reconnectionDelayMax: 5000,  // Maximum delay between reconnection attempts
-  randomizationFactor: 0.5,
 });
 const fs = require('fs')
 
 const PORT = process.env.PORT || 3000;
+
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
@@ -30,8 +26,6 @@ app.get('/', (req, res) => {
 
 const rooms = {};
 
-
-
 io.on('connection', (socket) => {
 
   // Function to join a room
@@ -39,7 +33,6 @@ io.on('connection', (socket) => {
    // Create the room if it doesn't exist
     if (!rooms[roomName]) {
       rooms[roomName] = { users: [] };
-      console.log(socket.request.session)
     }
 
     // Join the room
@@ -57,9 +50,9 @@ io.on('connection', (socket) => {
     // Notify other users in the room about the new connection
     socket.broadcast.to(roomName).emit('user-connected', userId);
 
-    socket.on('file-upload', ({ fileName, fileData },userId) => {
+    socket.on('file-upload', ({ fileName, fileData, fileSize },userId) => {
       // Process and send the file data to all connected clients
-      io.to(roomName).emit('file-receive', { fileName, fileData },userId);
+      io.to(roomName).emit('file-receive', { fileName, fileData, fileSize },userId);
     });
 
     // Notify the newly connected user about other users in the room
@@ -93,8 +86,6 @@ io.on('connection', (socket) => {
 
     console.log(`User ${userId} disconnected from room ${roomName}`);
   });
-
- 
   
   console.log(rooms)
   
